@@ -4,7 +4,7 @@ metadata:
   name: ecsdemo-nodejs-production
   labels:
     app: ecsdemo-nodejs
-  namespace: default
+  namespace: production
 spec:
   replicas: 1
   selector:
