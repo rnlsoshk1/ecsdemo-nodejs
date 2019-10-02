@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecsdemo-nodejs
+  name: ecsdemo-nodejs-dev
   labels:
     app: ecsdemo-nodejs
   namespace: default
@@ -21,7 +21,7 @@ spec:
         app: ecsdemo-nodejs
     spec:
       containers:
-      - image: brentley/ecsdemo-nodejs:latest
+      - image: rnlsoshk1/nodejs:latest
         imagePullPolicy: Always
         name: ecsdemo-nodejs
         ports:
