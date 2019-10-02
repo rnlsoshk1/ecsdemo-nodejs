@@ -4,7 +4,7 @@ metadata:
   name: ecsdemo-nodejs-canary
   labels:
     app: ecsdemo-nodejs
-  namespace: canary
+  namespace: production
 spec:
   replicas: 1
   selector:
