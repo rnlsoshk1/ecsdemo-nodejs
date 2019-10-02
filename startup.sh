@@ -24,15 +24,15 @@ esac
 
 if [[ "${orchestrator}" == 'ecs' ]]; then
     case "${NETWORK}" in
-      100)
+      0)
         zone=a
         color=Crimson
         ;;
-      101)
+      2)
         zone=b
         color=CornflowerBlue
         ;;
-      102)
+      3)
         zone=c
         color=LightGreen
         ;;
@@ -68,7 +68,8 @@ if [[ "${orchestrator}" == 'kubernetes' ]]; then
 fi 
 
 if [[ ${orchestrator} == 'unknown' ]]; then
-  zone=$(curl -m2 -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.availabilityZone' | grep -o .$)
+  # zone=$(curl -m2 -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.availabilityZone' | grep -o .$)
+  zone=unknown
 fi 
 
 # kubernetes sets routes differently -- so we will discover our IP differently
