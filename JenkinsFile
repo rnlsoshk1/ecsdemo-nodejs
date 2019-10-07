@@ -1,0 +1,37 @@
+podTemplate(
+	label: 'mypod',
+	volumes: [
+		emptyDirVolume(mountPath: '/etc/gitrepo', memory: false),
+		hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+	],
+	containers:
+	[
+	    containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
+	    containerTemplate(name: 'nodejs', image: 'NodeJS', command: 'cat', ttyEnabled: true),
+	    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true,
+	    	envVars: [secretEnvVar(key: 'DOCKER_HUB_PASSWORD', secretName: 'docker-hub-password', secretKey: 'DOCKER_HUB_PASSWORD')]
+	    )
+    ]
+)
+{
+    node('mypod') {
+        stage('Clone repository') {
+            container('git') {
+                sh 'git clone -b master https://github.com/rnlsoshk1/ecsdemo-nodejs.git /etc/gitrepo'
+            }
+        }
+        stage('Test source codes') {
+            container('nodejs') {
+                sh 'npm install'
+                sh 'node /etc/gitrepo/test/test.js'
+            }
+        }
+        stage('Build and push docker image'){
+            container('docker') {
+                sh 'docker login -urnlsoshk1 -p$DOCKER_HUB_PASSWORD'
+                sh 'docker build /etc/gitrepo/ -t rnlsoshk1/nodejs --no-cache'
+                sh 'docker push rnlsoshk1/nodejs'
+            }
+        }
+    }
+}
