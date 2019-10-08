@@ -11,9 +11,9 @@ podTemplate(
 	    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true,
 	    	envVars: [secretEnvVar(key: 'DOCKER_HUB_PASSWORD', secretName: 'docker-hub-password', secretKey: 'DOCKER_HUB_PASSWORD')]
 	    ),
-        containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', command: 'cat', ttyEnabled: true)
-    ]
+            containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', command: 'cat', ttyEnabled: true, serviceAccount : 'default'),
+            containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', command: 'cat', ttyEnabled: true, serviceAccount : 'default')
+    	]
 )
 {
     node('mypod') {
@@ -55,7 +55,6 @@ podTemplate(
         stage('kubectl test') {
             container('kubectl'){
                 println "kubectl test"
-                sh "kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default"
 		sh "kubectl get nodes"
             }
         }
