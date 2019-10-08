@@ -52,11 +52,17 @@ podTemplate(
         //         sh "helm install chartmuseum/msa"
         //     }
         // }
+        stage('kubectl test') {
+            container('kubectl'){
+                println "kubectl test"
+                sh "kubectl get nodes"
+            }
+        }
         stage('Helm test') {
-            println "kubectl test"
-            sh "kubectl get nodes"
-            println "helm test"
-            sh "helm init"
+            container('helm'){
+                println "helm test"
+                sh "helm init"
+            }
         }
     }
 }
