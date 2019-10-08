@@ -1,5 +1,6 @@
 podTemplate(
 	label: 'mypod',
+	serviceAccount : 'default',
 	volumes: [
 		emptyDirVolume(mountPath: '/etc/gitrepo', memory: false),
 		hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
@@ -11,8 +12,8 @@ podTemplate(
 	    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true,
 	    	envVars: [secretEnvVar(key: 'DOCKER_HUB_PASSWORD', secretName: 'docker-hub-password', secretKey: 'DOCKER_HUB_PASSWORD')]
 	    ),
-            containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', command: 'cat', ttyEnabled: true, serviceAccount : 'default'),
-            containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', command: 'cat', ttyEnabled: true, serviceAccount : 'default')
+            containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', command: 'cat', ttyEnabled: true),
+            containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', command: 'cat', ttyEnabled: true)
     	]
 )
 {
