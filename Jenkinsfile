@@ -55,7 +55,8 @@ podTemplate(
         stage('kubectl test') {
             container('kubectl'){
                 println "kubectl test"
-                sh "kubectl config view"
+                sh "kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default"
+		sh "kubectl get nodes"
             }
         }
         stage('Helm test') {
