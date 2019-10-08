@@ -17,38 +17,46 @@ podTemplate(
 )
 {
     node('mypod') {
-        stage('Clone repository') {
-            container('git') {
-                sh 'git clone -b master https://github.com/rnlsoshk1/ecsdemo-nodejs.git /etc/gitrepo'
-            }
-        }
+        // stage('Clone repository') {
+        //     container('git') {
+        //         sh 'git clone -b master https://github.com/rnlsoshk1/ecsdemo-nodejs.git /etc/gitrepo'
+        //     }
+        // }
+
         // stage('Test source codes') {
         //     container('nodejs') {
         //         sh 'npm install'
         //         sh 'node /etc/gitrepo/test/test.js'
         //     }
         // }
-        stage('Build and push docker image'){
-            container('docker') {
-                sh 'docker login -urnlsoshk1 -p$DOCKER_HUB_PASSWORD'
-                sh 'docker build /etc/gitrepo/ -t rnlsoshk1/nodejs --no-cache'
-                sh 'docker push rnlsoshk1/nodejs'
-            }
-        }
-        stage('Build and push helm chart'){
-            container('helm') {
-                println "initiliazing helm client"
-                sh "helm init"
-                println "checking client/server version"
-                sh "helm version"
 
-                println "Add repository"
-                sh "helm repo add chartmuseum http://34.85.30.191:8080/"
-                sh "helm repo update"
-                sh "[ ! -z \"\$(helm ls msa)\" ] || helm del --purge msa"
-                println "Running deployment"
-                sh "helm install chartmuseum/msa"
-            }
+        // stage('Build and push docker image'){
+        //     container('docker') {
+        //         sh 'docker login -urnlsoshk1 -p$DOCKER_HUB_PASSWORD'
+        //         sh 'docker build /etc/gitrepo/ -t rnlsoshk1/nodejs --no-cache'
+        //         sh 'docker push rnlsoshk1/nodejs'
+        //     }
+        // }
+        // stage('Build and push helm chart'){
+        //     container('helm') {
+        //         println "initiliazing helm client"
+        //         sh "helm init"
+        //         println "checking client/server version"
+        //         sh "helm version"
+
+        //         println "Add repository"
+        //         sh "helm repo add chartmuseum http://34.85.30.191:8080/"
+        //         sh "helm repo update"
+        //         sh "[ ! -z \"\$(helm ls msa)\" ] || helm del --purge msa"
+        //         println "Running deployment"
+        //         sh "helm install chartmuseum/msa"
+        //     }
+        // }
+        stage('Helm test') {
+            println "kubectl test"
+            sh "kubectl get nodes"
+            println "helm test"
+            sh "helm init"
         }
     }
 }
