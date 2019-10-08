@@ -55,7 +55,7 @@ podTemplate(
         stage('kubectl test') {
             container('kubectl'){
                 println "kubectl test"
-                sh "kubectl config current-context"
+                sh "kubectl config view"
             }
         }
         stage('Helm test') {
